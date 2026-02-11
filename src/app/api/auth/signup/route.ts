@@ -30,8 +30,10 @@ export async function POST(req: Request) {
   } catch (e) {
     console.error("Signup error:", e);
     const message = e instanceof Error ? e.message : "Unknown error";
+    const dbUrl = process.env.TURSO_DATABASE_URL || "NOT_SET";
+    const hasToken = !!process.env.TURSO_AUTH_TOKEN;
     return NextResponse.json(
-      { error: message },
+      { error: message, dbUrl: dbUrl.substring(0, 20) + "...", hasToken },
       { status: 500 }
     );
   }
