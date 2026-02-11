@@ -145,47 +145,6 @@ export async function GET(req: NextRequest) {
         break;
     }
 
-    // Wrap with watermark for unauthenticated preview requests
-    if (!authenticated && preview) {
-      element = (
-        <div
-          style={{
-            position: "relative",
-            display: "flex",
-            width: "1200px",
-            height: "630px",
-          }}
-        >
-          {element}
-          <div
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "1200px",
-              height: "630px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                fontSize: "72px",
-                fontWeight: 900,
-                color: "rgba(255,255,255,0.15)",
-                transform: "rotate(-25deg)",
-                letterSpacing: "8px",
-              }}
-            >
-              ogpix.dev
-            </div>
-          </div>
-        </div>
-      );
-    }
-
     return new ImageResponse(element, {
       width: 1200,
       height: 630,

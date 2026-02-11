@@ -115,7 +115,7 @@ export default function PlaygroundPage() {
           <h1 className="text-3xl font-bold mb-2">Template Playground</h1>
           <p className="text-zinc-400">
             Customize every detail: colors, patterns, tags, fonts, and more.
-            Sign up for watermark-free images.
+            Sign up to use in production.
           </p>
         </div>
 
@@ -312,7 +312,7 @@ export default function PlaygroundPage() {
               href="/signup"
               className="block text-center py-3 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium transition"
             >
-              Sign up for watermark-free images
+              Sign up to get your API key
             </Link>
           </div>
 
