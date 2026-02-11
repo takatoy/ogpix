@@ -116,24 +116,37 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
-        <h2 className="text-lg font-semibold mb-4">Quick Start</h2>
-        <div className="space-y-3 text-sm text-zinc-400">
-          <p>
-            1. Go to{" "}
-            <Link
-              href="/dashboard/keys"
-              className="text-violet-400 hover:text-violet-300"
-            >
-              API Keys
-            </Link>{" "}
-            and create a new key
+      <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
+        <Link
+          href="/dashboard/builder"
+          className="bg-violet-500/5 border border-violet-500/20 hover:border-violet-500/40 rounded-xl p-6 transition group"
+        >
+          <div className="flex items-center gap-3 mb-3">
+            <svg className="w-6 h-6 text-violet-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+            <h2 className="text-lg font-semibold group-hover:text-violet-400 transition">Image Builder</h2>
+          </div>
+          <p className="text-sm text-zinc-400">
+            Design and customize your OG images with live preview. Get production-ready URLs with your API key.
           </p>
-          <p>2. Make a GET request to generate an image:</p>
-          <pre className="bg-zinc-950 border border-zinc-800 rounded-lg p-4 font-mono text-xs overflow-x-auto text-zinc-300">
-{`curl "https://ogpix.dev/api/og?template=blog&title=Hello%20World&key=YOUR_API_KEY" -o og-image.png`}
+        </Link>
+
+        <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
+          <h2 className="text-lg font-semibold mb-3">Quick Start</h2>
+          <div className="space-y-2 text-sm text-zinc-400">
+            <p>
+              1.{" "}
+              <Link href="/dashboard/keys" className="text-violet-400 hover:text-violet-300">
+                Create an API key
+              </Link>
+            </p>
+            <p>2. Use the Image Builder or call the API directly</p>
+            <p>3. Add the URL as your og:image meta tag</p>
+          </div>
+          <pre className="bg-zinc-950 border border-zinc-800 rounded-lg p-3 font-mono text-xs overflow-x-auto text-zinc-300 mt-3">
+{`curl "https://ogpix.dev/api/og?template=blog&title=Hello&key=YOUR_KEY" -o og.png`}
           </pre>
-          <p>3. Use the URL as your og:image meta tag</p>
         </div>
       </div>
     </div>
