@@ -29,11 +29,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ id: user.id, email: user.email }, { status: 201 });
   } catch (e) {
     console.error("Signup error:", e);
-    const message = e instanceof Error ? e.message : "Unknown error";
-    const dbUrl = process.env.TURSO_DATABASE_URL || "NOT_SET";
-    const hasToken = !!process.env.TURSO_AUTH_TOKEN;
     return NextResponse.json(
-      { error: message, dbUrl: dbUrl.substring(0, 20) + "...", hasToken },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }
