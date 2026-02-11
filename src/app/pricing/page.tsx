@@ -62,14 +62,14 @@ export default function PricingPage() {
   return (
     <div className="min-h-screen">
       <Nav />
-      <div className="max-w-5xl mx-auto px-6 pt-24 pb-16">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-16">
         <h1 className="text-4xl font-bold text-center mb-4">Pricing</h1>
         <p className="text-zinc-400 text-center mb-12 max-w-lg mx-auto">
           Start free, upgrade when you need more. All plans include access to
           every template and the full API.
         </p>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
           {PLANS.map((plan) => (
             <div
               key={plan.name}

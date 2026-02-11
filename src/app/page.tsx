@@ -37,7 +37,7 @@ export default function Home() {
       <Nav />
 
       {/* Hero */}
-      <section className="max-w-6xl mx-auto px-6 pt-24 pb-16">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-16">
         <div className="text-center">
           <div className="inline-block px-4 py-1.5 bg-violet-500/10 border border-violet-500/20 rounded-full text-violet-400 text-sm mb-6">
             Dynamic OG images via API
@@ -54,7 +54,7 @@ export default function Home() {
             pages, and social media with a simple REST API. No design tools
             needed.
           </p>
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
             <Link
               href="/signup"
               className="px-8 py-3 bg-violet-600 hover:bg-violet-500 rounded-lg font-semibold text-lg transition"
@@ -75,7 +75,7 @@ export default function Home() {
       </section>
 
       {/* Template Previews */}
-      <section className="max-w-6xl mx-auto px-6 py-16">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <h2 className="text-3xl font-bold text-center mb-4">
           Professional templates
         </h2>
@@ -83,7 +83,7 @@ export default function Home() {
           Choose from beautiful, customizable templates. Pass your content via
           URL parameters and get a perfect image back.
         </p>
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
           {TEMPLATES.map((t) => (
             <div key={t.name} className="group">
               <div className="rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900/50 hover:border-violet-500/50 transition">
@@ -103,8 +103,8 @@ export default function Home() {
       </section>
 
       {/* Code Example */}
-      <section className="max-w-6xl mx-auto px-6 py-16">
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 items-center">
           <div>
             <h2 className="text-3xl font-bold mb-4">Dead simple API</h2>
             <p className="text-zinc-400 mb-6">
@@ -142,14 +142,14 @@ export default function Home() {
       </section>
 
       {/* Pricing Preview */}
-      <section className="max-w-6xl mx-auto px-6 py-16">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-12 sm:py-16">
         <h2 className="text-3xl font-bold text-center mb-4">
           Simple pricing
         </h2>
         <p className="text-zinc-400 text-center mb-12">
           Start free, scale as you grow.
         </p>
-        <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
           <PricingCard
             name="Free"
             price={0}
@@ -178,8 +178,8 @@ export default function Home() {
       </section>
 
       {/* CTA */}
-      <section className="max-w-6xl mx-auto px-6 py-24">
-        <div className="text-center bg-gradient-to-br from-violet-600/20 to-pink-600/20 border border-violet-500/20 rounded-2xl p-12">
+      <section className="max-w-6xl mx-auto px-4 sm:px-6 py-16 sm:py-24">
+        <div className="text-center bg-gradient-to-br from-violet-600/20 to-pink-600/20 border border-violet-500/20 rounded-2xl p-6 sm:p-12">
           <h2 className="text-3xl font-bold mb-4">
             Ready to generate beautiful OG images?
           </h2>
@@ -197,8 +197,8 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="border-t border-zinc-800 py-8">
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex items-center justify-between text-sm text-zinc-500">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm text-zinc-500">
             <span>
               <span className="text-violet-400 font-semibold">og</span>pix
             </span>
@@ -211,7 +211,7 @@ export default function Home() {
               </Link>
             </div>
           </div>
-          <div className="flex gap-6 mt-4 text-xs text-zinc-600">
+          <div className="flex flex-wrap gap-4 sm:gap-6 mt-4 text-xs text-zinc-600">
             <Link
               href="/legal/terms"
               className="hover:text-zinc-400 transition"

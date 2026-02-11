@@ -13,7 +13,7 @@ function VerifyContent() {
   return (
     <div className="min-h-screen">
       <Nav />
-      <div className="max-w-md mx-auto px-6 pt-24 text-center">
+      <div className="max-w-md mx-auto px-4 sm:px-6 pt-16 sm:pt-24 text-center">
         {success ? (
           <>
             <div className="w-16 h-16 bg-emerald-500/10 border border-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -85,7 +85,7 @@ export default function VerifyPage() {
       fallback={
         <div className="min-h-screen">
           <Nav />
-          <div className="max-w-md mx-auto px-6 pt-24 text-center">
+          <div className="max-w-md mx-auto px-4 sm:px-6 pt-16 sm:pt-24 text-center">
             <p className="text-zinc-400">Verifying...</p>
           </div>
         </div>

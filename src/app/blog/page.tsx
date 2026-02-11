@@ -39,7 +39,7 @@ export default function BlogPage() {
   return (
     <div className="min-h-screen">
       <Nav />
-      <div className="max-w-3xl mx-auto px-6 pt-24 pb-16">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-16">
         <h1 className="text-4xl font-bold mb-4">Blog</h1>
         <p className="text-zinc-400 mb-12">
           Tips, tutorials, and insights on Open Graph images and social sharing.

@@ -4,11 +4,11 @@ export default function TokushohoPage() {
   return (
     <div className="min-h-screen">
       <Nav />
-      <div className="max-w-3xl mx-auto px-6 pt-24 pb-16">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-16">
         <h1 className="text-3xl font-bold mb-8">特定商取引法に基づく表記</h1>
 
-        <div className="border border-zinc-800 rounded-xl overflow-hidden">
-          <table className="w-full text-sm">
+        <div className="border border-zinc-800 rounded-xl overflow-x-auto">
+          <table className="w-full text-sm min-w-[400px]">
             <tbody className="divide-y divide-zinc-800">
               <Row label="販売業者" value="【あなたの氏名または屋号を記入】" />
               <Row label="運営統括責任者" value="【あなたの氏名を記入】" />
@@ -65,10 +65,10 @@ export default function TokushohoPage() {
 function Row({ label, value }: { label: string; value: string }) {
   return (
     <tr>
-      <td className="p-4 font-semibold text-zinc-300 bg-zinc-900/50 w-48 align-top">
+      <td className="p-3 sm:p-4 font-semibold text-zinc-300 bg-zinc-900/50 w-32 sm:w-48 align-top whitespace-nowrap">
         {label}
       </td>
-      <td className="p-4 text-zinc-400">{value}</td>
+      <td className="p-3 sm:p-4 text-zinc-400">{value}</td>
     </tr>
   );
 }

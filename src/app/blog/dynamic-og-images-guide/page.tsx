@@ -12,7 +12,7 @@ export default function DynamicOgImagesGuide() {
   return (
     <div className="min-h-screen">
       <Nav />
-      <article className="max-w-3xl mx-auto px-6 pt-24 pb-16">
+      <article className="max-w-3xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-16">
         <div className="mb-8">
           <Link
             href="/blog"

@@ -102,7 +102,7 @@ export default function PlaygroundPage() {
   return (
     <div className="min-h-screen">
       <Nav />
-      <div className="max-w-6xl mx-auto px-6 pt-12 pb-16">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 sm:pt-12 pb-16">
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Template Playground</h1>
           <p className="text-zinc-400">
@@ -111,7 +111,7 @@ export default function PlaygroundPage() {
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-[380px_1fr] gap-8">
+        <div className="grid lg:grid-cols-[380px_1fr] gap-6 lg:gap-8">
           {/* Controls */}
           <div className="space-y-6">
             {/* Template selector */}

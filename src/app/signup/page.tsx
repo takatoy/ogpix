@@ -47,7 +47,7 @@ export default function SignupPage() {
   return (
     <div className="min-h-screen">
       <Nav />
-      <div className="max-w-md mx-auto px-6 pt-24">
+      <div className="max-w-md mx-auto px-4 sm:px-6 pt-16 sm:pt-24">
         <h1 className="text-3xl font-bold mb-2">Create your account</h1>
         <p className="text-zinc-400 mb-8">
           Start generating OG images for free

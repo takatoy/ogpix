@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
+import { useState } from "react";
 
 const NAV_ITEMS = [
   { href: "/dashboard", label: "Overview", icon: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" },
@@ -19,6 +20,7 @@ export default function DashboardLayout({
 }) {
   const { status } = useSession();
   const pathname = usePathname();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   if (status === "unauthenticated") {
     redirect("/login");
@@ -33,12 +35,48 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen flex">
-      {/* Sidebar */}
-      <aside className="w-64 border-r border-zinc-800 bg-zinc-950 p-6 flex flex-col">
-        <Link href="/" className="text-xl font-bold tracking-tight mb-8">
+    <div className="min-h-screen md:flex">
+      {/* Mobile header */}
+      <div className="md:hidden border-b border-zinc-800 bg-zinc-950 px-4 h-14 flex items-center justify-between">
+        <Link href="/" className="text-xl font-bold tracking-tight">
           <span className="text-violet-400">og</span>pix
         </Link>
+        <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="p-2 text-zinc-400 hover:text-white transition"
+          aria-label="Toggle sidebar"
+        >
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            {sidebarOpen ? (
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            ) : (
+              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            )}
+          </svg>
+        </button>
+      </div>
+
+      {/* Mobile sidebar overlay */}
+      {sidebarOpen && (
+        <div
+          className="md:hidden fixed inset-0 z-40 bg-black/50"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={`
+          fixed inset-y-0 left-0 z-50 w-64 border-r border-zinc-800 bg-zinc-950 p-6 flex flex-col
+          transform transition-transform duration-200 ease-in-out
+          md:relative md:translate-x-0
+          ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+        `}
+      >
+        <Link href="/" className="text-xl font-bold tracking-tight mb-8 hidden md:block">
+          <span className="text-violet-400">og</span>pix
+        </Link>
+        <div className="md:hidden mb-6" />
         <nav className="space-y-1 flex-1">
           {NAV_ITEMS.map((item) => {
             const isActive = pathname === item.href;
@@ -46,6 +84,7 @@ export default function DashboardLayout({
               <Link
                 key={item.href}
                 href={item.href}
+                onClick={() => setSidebarOpen(false)}
                 className={`flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition ${
                   isActive
                     ? "bg-violet-500/10 text-violet-400"
@@ -79,7 +118,7 @@ export default function DashboardLayout({
       </aside>
 
       {/* Main */}
-      <main className="flex-1 p-8 overflow-auto">{children}</main>
+      <main className="flex-1 p-4 sm:p-6 md:p-8 overflow-auto">{children}</main>
     </div>
   );
 }

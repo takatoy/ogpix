@@ -88,7 +88,7 @@ export default function KeysPage() {
       {/* Create new key */}
       <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6 mb-6">
         <h2 className="font-semibold mb-4">Create new key</h2>
-        <div className="flex gap-3">
+        <div className="flex flex-col sm:flex-row gap-3">
           <input
             type="text"
             placeholder="Key name (e.g., Production)"
@@ -99,7 +99,7 @@ export default function KeysPage() {
           <button
             onClick={createKey}
             disabled={loading}
-            className="px-6 py-2 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 rounded-lg text-sm font-medium transition"
+            className="px-6 py-2 bg-violet-600 hover:bg-violet-500 disabled:opacity-50 rounded-lg text-sm font-medium transition shrink-0"
           >
             {loading ? "Creating..." : "Create key"}
           </button>
@@ -169,7 +169,7 @@ export default function KeysPage() {
       )}
 
       {/* Key list */}
-      <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-hidden">
+      <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl overflow-x-auto">
         {keys.length === 0 ? (
           <div className="p-8 text-center text-zinc-500">
             No API keys yet. Create one above to get started.

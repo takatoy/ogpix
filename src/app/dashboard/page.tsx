@@ -74,7 +74,7 @@ export default function DashboardPage() {
         </div>
       )}
 
-      <div className="grid md:grid-cols-3 gap-6 mb-8">
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-8">
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
           <div className="text-sm text-zinc-400 mb-1">Current Plan</div>
           <div className="text-2xl font-bold capitalize">

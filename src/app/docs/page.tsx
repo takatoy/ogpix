@@ -11,7 +11,7 @@ export default function DocsPage() {
   return (
     <div className="min-h-screen">
       <Nav />
-      <div className="max-w-3xl mx-auto px-6 pt-24 pb-16">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-16 sm:pt-24 pb-16">
         <h1 className="text-4xl font-bold mb-8">API Documentation</h1>
 
         <section className="space-y-8">
@@ -56,8 +56,8 @@ Authorization: Bearer ogpix_abc123`}
             <h2 className="text-2xl font-bold mb-4 text-violet-400">
               Parameters
             </h2>
-            <div className="border border-zinc-800 rounded-lg overflow-hidden">
-              <table className="w-full text-sm">
+            <div className="border border-zinc-800 rounded-lg overflow-x-auto">
+              <table className="w-full text-sm min-w-[500px]">
                 <thead className="bg-zinc-900">
                   <tr>
                     <th className="text-left p-3 font-semibold">Parameter</th>
