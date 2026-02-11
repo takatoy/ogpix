@@ -1,5 +1,6 @@
 import React from "react";
 import type { CustomStyle } from "./types";
+import { PatternOverlay } from "./patterns";
 
 interface BlogTemplateProps {
   title: string;
@@ -25,9 +26,10 @@ export function BlogTemplate({
   const bg =
     custom?.bg ||
     (isDark
-      ? "linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2d1b69 100%)"
-      : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)");
-  const textColor = custom?.color || "white";
+      ? "linear-gradient(145deg, #0a0a1a 0%, #1a1035 40%, #2d1b69 100%)"
+      : "linear-gradient(145deg, #fafafe 0%, #eef0ff 40%, #e0e7ff 100%)");
+  const textColor = custom?.color || (isDark ? "#ffffff" : "#1a1a2e");
+  const accent = custom?.accent || (isDark ? "#8b5cf6" : "#6d28d9");
   const baseFontSize = custom?.fontSize ? parseInt(custom.fontSize) : null;
 
   return (
@@ -37,88 +39,203 @@ export function BlogTemplate({
         height: "630px",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
-        padding: "80px",
+        position: "relative",
         background: bg,
         color: textColor,
         fontFamily: "sans-serif",
+        overflow: "hidden",
       }}
     >
-      {custom?.accent && (
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            right: 0,
-            height: "6px",
-            background: custom.accent,
-            display: "flex",
-          }}
-        />
-      )}
-      {site && (
-        <div
-          style={{
-            display: "flex",
-            fontSize: "24px",
-            opacity: 0.8,
-            marginBottom: "20px",
-            textTransform: "uppercase",
-            letterSpacing: "3px",
-          }}
-        >
-          {site}
-        </div>
-      )}
+      <PatternOverlay pattern={custom?.pattern || "dots"} />
+
+      {/* Accent top bar */}
       <div
         style={{
           display: "flex",
-          fontSize:
-            baseFontSize ||
-            (title.length > 60 ? "48px" : "64px"),
-          fontWeight: 800,
-          lineHeight: 1.2,
-          marginBottom: subtitle ? "20px" : "0",
+          height: "5px",
+          background: `linear-gradient(90deg, ${accent}, ${accent}88 50%, transparent)`,
         }}
-      >
-        {title}
-      </div>
-      {subtitle && (
-        <div
-          style={{
-            display: "flex",
-            fontSize: "28px",
-            opacity: 0.8,
-            marginBottom: "30px",
-          }}
-        >
-          {subtitle}
-        </div>
-      )}
+      />
+
+      {/* Decorative circle */}
+      <div
+        style={{
+          position: "absolute",
+          top: "-120px",
+          right: "-80px",
+          width: "400px",
+          height: "400px",
+          borderRadius: "50%",
+          background: `${accent}08`,
+          border: `1px solid ${accent}15`,
+          display: "flex",
+        }}
+      />
+
       <div
         style={{
           display: "flex",
-          alignItems: "center",
-          gap: "20px",
-          marginTop: "auto",
+          flexDirection: "column",
+          justifyContent: "center",
+          flex: 1,
+          padding: "60px 80px 50px",
+          position: "relative",
         }}
       >
-        {author && (
-          <div style={{ display: "flex", fontSize: "22px", fontWeight: 600 }}>
-            {author}
+        {/* Tag / site name */}
+        {(custom?.tag || site) && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              marginBottom: "24px",
+            }}
+          >
+            {custom?.tag && (
+              <div
+                style={{
+                  display: "flex",
+                  padding: "6px 16px",
+                  background: `${accent}20`,
+                  border: `1px solid ${accent}40`,
+                  borderRadius: "20px",
+                  fontSize: "16px",
+                  fontWeight: 600,
+                  color: accent,
+                  letterSpacing: "0.5px",
+                }}
+              >
+                {custom.tag}
+              </div>
+            )}
+            {site && (
+              <div
+                style={{
+                  display: "flex",
+                  fontSize: "18px",
+                  opacity: 0.5,
+                  letterSpacing: "2px",
+                  textTransform: "uppercase",
+                  fontWeight: 500,
+                }}
+              >
+                {site}
+              </div>
+            )}
           </div>
         )}
-        {author && date && (
-          <div style={{ display: "flex", fontSize: "22px", opacity: 0.5 }}>
-            |
+
+        {/* Title */}
+        <div
+          style={{
+            display: "flex",
+            fontSize: baseFontSize || (title.length > 70 ? 42 : title.length > 45 ? 52 : 60),
+            fontWeight: 800,
+            lineHeight: 1.15,
+            letterSpacing: "-1.5px",
+            maxWidth: "950px",
+          }}
+        >
+          {title}
+        </div>
+
+        {/* Subtitle */}
+        {subtitle && (
+          <div
+            style={{
+              display: "flex",
+              fontSize: "24px",
+              opacity: 0.6,
+              marginTop: "16px",
+              lineHeight: 1.4,
+              maxWidth: "800px",
+            }}
+          >
+            {subtitle}
           </div>
         )}
-        {date && (
-          <div style={{ display: "flex", fontSize: "22px", opacity: 0.7 }}>
-            {date}
-          </div>
-        )}
+
+        {/* Bottom: author & date */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "16px",
+            marginTop: "auto",
+            paddingTop: "30px",
+          }}
+        >
+          {/* Author avatar */}
+          {author && (
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "14px",
+              }}
+            >
+              <div
+                style={{
+                  width: "44px",
+                  height: "44px",
+                  borderRadius: "50%",
+                  background: `linear-gradient(135deg, ${accent}, ${accent}88)`,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: "20px",
+                  fontWeight: 700,
+                  color: "white",
+                }}
+              >
+                {author[0].toUpperCase()}
+              </div>
+              <div style={{ display: "flex", flexDirection: "column" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    fontSize: "18px",
+                    fontWeight: 700,
+                  }}
+                >
+                  {author}
+                </div>
+                {date && (
+                  <div
+                    style={{
+                      display: "flex",
+                      fontSize: "15px",
+                      opacity: 0.5,
+                    }}
+                  >
+                    {date}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {!author && date && (
+            <div style={{ display: "flex", fontSize: "18px", opacity: 0.5 }}>
+              {date}
+            </div>
+          )}
+
+          {/* Logo */}
+          {custom?.logo && (
+            <img
+              src={custom.logo}
+              width={36}
+              height={36}
+              style={{
+                marginLeft: "auto",
+                borderRadius: "8px",
+                objectFit: "contain",
+              }}
+            />
+          )}
+        </div>
       </div>
     </div>
   );

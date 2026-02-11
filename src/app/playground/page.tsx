@@ -10,7 +10,7 @@ type Template = (typeof TEMPLATES)[number];
 const TEMPLATE_FIELDS: Record<Template, { key: string; label: string; placeholder: string }[]> = {
   blog: [
     { key: "title", label: "Title", placeholder: "How to Build a SaaS in One Weekend" },
-    { key: "subtitle", label: "Subtitle", placeholder: "A step-by-step guide" },
+    { key: "subtitle", label: "Subtitle", placeholder: "A step-by-step guide for developers" },
     { key: "author", label: "Author", placeholder: "Sarah Chen" },
     { key: "date", label: "Date", placeholder: "Feb 2026" },
     { key: "site", label: "Site name", placeholder: "devblog.io" },
@@ -22,7 +22,7 @@ const TEMPLATE_FIELDS: Record<Template, { key: string; label: string; placeholde
   ],
   social: [
     { key: "title", label: "Text", placeholder: "Just launched my new project!" },
-    { key: "subtitle", label: "Subtitle", placeholder: "Check it out" },
+    { key: "subtitle", label: "Subtitle", placeholder: "Check it out and let me know what you think" },
     { key: "author", label: "Name", placeholder: "Alex Rivera" },
     { key: "handle", label: "Handle", placeholder: "alexdev" },
   ],
@@ -35,11 +35,21 @@ const TEMPLATE_FIELDS: Record<Template, { key: string; label: string; placeholde
 
 const PRESET_STYLES = [
   { label: "Default", bg: "", color: "", accent: "" },
-  { label: "Ocean", bg: "linear-gradient(135deg, #0c1445 0%, #1a3a6b 50%, #2196F3 100%)", color: "#ffffff", accent: "#2196F3" },
-  { label: "Sunset", bg: "linear-gradient(135deg, #2d1b00 0%, #e65100 50%, #ff9800 100%)", color: "#ffffff", accent: "#ff9800" },
-  { label: "Forest", bg: "linear-gradient(135deg, #0d1f0d 0%, #1b5e20 50%, #4caf50 100%)", color: "#ffffff", accent: "#4caf50" },
-  { label: "Rose", bg: "linear-gradient(135deg, #1a0011 0%, #880e4f 50%, #e91e63 100%)", color: "#ffffff", accent: "#e91e63" },
+  { label: "Ocean", bg: "linear-gradient(145deg, #0c1445 0%, #1a3a6b 50%, #2196F3 100%)", color: "#ffffff", accent: "#2196F3" },
+  { label: "Sunset", bg: "linear-gradient(145deg, #2d1b00 0%, #e65100 50%, #ff9800 100%)", color: "#ffffff", accent: "#ff9800" },
+  { label: "Forest", bg: "linear-gradient(145deg, #0d1f0d 0%, #1b5e20 50%, #4caf50 100%)", color: "#ffffff", accent: "#4caf50" },
+  { label: "Rose", bg: "linear-gradient(145deg, #1a0011 0%, #880e4f 50%, #e91e63 100%)", color: "#ffffff", accent: "#e91e63" },
   { label: "Slate", bg: "#1e293b", color: "#e2e8f0", accent: "#64748b" },
+  { label: "Midnight", bg: "linear-gradient(145deg, #020617 0%, #0f172a 50%, #1e293b 100%)", color: "#e2e8f0", accent: "#6366f1" },
+  { label: "Ember", bg: "linear-gradient(145deg, #1c1917 0%, #44403c 50%, #78716c 100%)", color: "#fafaf9", accent: "#f97316" },
+];
+
+const PATTERNS = [
+  { label: "Auto", value: "" },
+  { label: "Dots", value: "dots" },
+  { label: "Grid", value: "grid" },
+  { label: "Diagonal", value: "diagonal" },
+  { label: "None", value: "none" },
 ];
 
 export default function PlaygroundPage() {
@@ -50,13 +60,15 @@ export default function PlaygroundPage() {
   const [customColor, setCustomColor] = useState("");
   const [customAccent, setCustomAccent] = useState("");
   const [customFontSize, setCustomFontSize] = useState("");
+  const [customTag, setCustomTag] = useState("");
+  const [customPattern, setCustomPattern] = useState("");
   const [imageKey, setImageKey] = useState(0);
 
-  function getImageUrl() {
+  function buildParams(includePreview: boolean) {
     const params = new URLSearchParams();
     params.set("template", template);
     params.set("theme", theme);
-    params.set("preview", "true");
+    if (includePreview) params.set("preview", "true");
     for (const field of TEMPLATE_FIELDS[template]) {
       const value = fields[field.key] || field.placeholder;
       params.set(field.key, value);
@@ -65,21 +77,17 @@ export default function PlaygroundPage() {
     if (customColor) params.set("color", customColor);
     if (customAccent) params.set("accent", customAccent);
     if (customFontSize) params.set("fontSize", customFontSize);
-    return `/api/og?${params.toString()}`;
+    if (customTag) params.set("tag", customTag);
+    if (customPattern) params.set("pattern", customPattern);
+    return params;
+  }
+
+  function getImageUrl() {
+    return `/api/og?${buildParams(true).toString()}`;
   }
 
   function getApiUrl() {
-    const params = new URLSearchParams();
-    params.set("template", template);
-    params.set("theme", theme);
-    for (const field of TEMPLATE_FIELDS[template]) {
-      const value = fields[field.key] || field.placeholder;
-      params.set(field.key, value);
-    }
-    if (customBg) params.set("bg", customBg);
-    if (customColor) params.set("color", customColor);
-    if (customAccent) params.set("accent", customAccent);
-    if (customFontSize) params.set("fontSize", customFontSize);
+    const params = buildParams(false);
     params.set("key", "YOUR_API_KEY");
     return `https://ogpix.dev/api/og?${params.toString()}`;
   }
@@ -106,14 +114,14 @@ export default function PlaygroundPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Template Playground</h1>
           <p className="text-zinc-400">
-            Try all templates live. Customize colors, fonts, and content.
+            Customize every detail: colors, patterns, tags, fonts, and more.
             Sign up for watermark-free images.
           </p>
         </div>
 
         <div className="grid lg:grid-cols-[380px_1fr] gap-6 lg:gap-8">
           {/* Controls */}
-          <div className="space-y-6">
+          <div className="space-y-5">
             {/* Template selector */}
             <div>
               <label className="text-sm text-zinc-400 mb-2 block">
@@ -178,6 +186,19 @@ export default function PlaygroundPage() {
                   />
                 </div>
               ))}
+              {/* Tag - available on all templates */}
+              <div>
+                <label className="text-xs text-zinc-500 mb-1 block">
+                  Tag / badge
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Tutorial, New, v2.0"
+                  value={customTag}
+                  onChange={(e) => setCustomTag(e.target.value)}
+                  className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-sm focus:outline-none focus:border-violet-500 transition"
+                />
+              </div>
             </div>
 
             {/* Style presets */}
@@ -198,58 +219,85 @@ export default function PlaygroundPage() {
               </div>
             </div>
 
+            {/* Pattern */}
+            <div>
+              <label className="text-sm text-zinc-400 mb-2 block">
+                Background pattern
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {PATTERNS.map((p) => (
+                  <button
+                    key={p.value}
+                    onClick={() => {
+                      setCustomPattern(p.value);
+                      setImageKey((k) => k + 1);
+                    }}
+                    className={`px-3 py-1.5 rounded-lg text-xs font-medium transition ${
+                      customPattern === p.value
+                        ? "bg-violet-600 text-white"
+                        : "bg-zinc-800 text-zinc-400 hover:bg-zinc-700"
+                    }`}
+                  >
+                    {p.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* Custom style */}
             <div className="space-y-3">
               <label className="text-sm text-zinc-400 block">
-                Custom style
+                Advanced customization
               </label>
-              <div>
-                <label className="text-xs text-zinc-500 mb-1 block">
-                  Background (color or CSS gradient)
-                </label>
-                <input
-                  type="text"
-                  placeholder="#1a1a2e or linear-gradient(...)"
-                  value={customBg}
-                  onChange={(e) => setCustomBg(e.target.value)}
-                  className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-sm focus:outline-none focus:border-violet-500 transition"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-zinc-500 mb-1 block">
-                  Text color
-                </label>
-                <input
-                  type="text"
-                  placeholder="#ffffff"
-                  value={customColor}
-                  onChange={(e) => setCustomColor(e.target.value)}
-                  className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-sm focus:outline-none focus:border-violet-500 transition"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-zinc-500 mb-1 block">
-                  Accent color
-                </label>
-                <input
-                  type="text"
-                  placeholder="#8b5cf6"
-                  value={customAccent}
-                  onChange={(e) => setCustomAccent(e.target.value)}
-                  className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-sm focus:outline-none focus:border-violet-500 transition"
-                />
-              </div>
-              <div>
-                <label className="text-xs text-zinc-500 mb-1 block">
-                  Title font size (px)
-                </label>
-                <input
-                  type="text"
-                  placeholder="64"
-                  value={customFontSize}
-                  onChange={(e) => setCustomFontSize(e.target.value)}
-                  className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-sm focus:outline-none focus:border-violet-500 transition"
-                />
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-xs text-zinc-500 mb-1 block">
+                    Background
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="#1a1a2e"
+                    value={customBg}
+                    onChange={(e) => setCustomBg(e.target.value)}
+                    className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-sm focus:outline-none focus:border-violet-500 transition"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-zinc-500 mb-1 block">
+                    Text color
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="#ffffff"
+                    value={customColor}
+                    onChange={(e) => setCustomColor(e.target.value)}
+                    className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-sm focus:outline-none focus:border-violet-500 transition"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-zinc-500 mb-1 block">
+                    Accent color
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="#8b5cf6"
+                    value={customAccent}
+                    onChange={(e) => setCustomAccent(e.target.value)}
+                    className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-sm focus:outline-none focus:border-violet-500 transition"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs text-zinc-500 mb-1 block">
+                    Font size (px)
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="64"
+                    value={customFontSize}
+                    onChange={(e) => setCustomFontSize(e.target.value)}
+                    className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-sm focus:outline-none focus:border-violet-500 transition"
+                  />
+                </div>
               </div>
             </div>
 

@@ -34,6 +34,10 @@ export async function GET(req: NextRequest) {
     if (searchParams.get("accent")) custom.accent = searchParams.get("accent")!;
     if (searchParams.get("fontSize"))
       custom.fontSize = searchParams.get("fontSize")!;
+    if (searchParams.get("tag")) custom.tag = searchParams.get("tag")!;
+    if (searchParams.get("pattern"))
+      custom.pattern = searchParams.get("pattern") as CustomStyle["pattern"];
+    if (logo) custom.logo = logo;
     const hasCustom = Object.keys(custom).length > 0 ? custom : undefined;
 
     // API key authentication

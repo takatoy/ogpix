@@ -129,6 +129,47 @@ Authorization: Bearer ogpix_abc123`}
                     </td>
                   </tr>
                   <tr>
+                    <td className="p-3 font-mono text-violet-300">tag</td>
+                    <td className="p-3 text-zinc-400">string</td>
+                    <td className="p-3 text-zinc-400">
+                      Badge/tag label (e.g. &quot;Tutorial&quot;, &quot;New&quot;)
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-mono text-violet-300">bg</td>
+                    <td className="p-3 text-zinc-400">string</td>
+                    <td className="p-3 text-zinc-400">
+                      Custom background (color or CSS gradient)
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-mono text-violet-300">color</td>
+                    <td className="p-3 text-zinc-400">string</td>
+                    <td className="p-3 text-zinc-400">Custom text color</td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-mono text-violet-300">accent</td>
+                    <td className="p-3 text-zinc-400">string</td>
+                    <td className="p-3 text-zinc-400">
+                      Accent color for decorative elements
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-mono text-violet-300">fontSize</td>
+                    <td className="p-3 text-zinc-400">number</td>
+                    <td className="p-3 text-zinc-400">
+                      Custom title font size in pixels
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className="p-3 font-mono text-violet-300">pattern</td>
+                    <td className="p-3 text-zinc-400">string</td>
+                    <td className="p-3 text-zinc-400">
+                      Background pattern: <code>dots</code>, <code>grid</code>,{" "}
+                      <code>diagonal</code>, <code>none</code>
+                    </td>
+                  </tr>
+                  <tr>
                     <td className="p-3 font-mono text-violet-300">key</td>
                     <td className="p-3 text-zinc-400">string</td>
                     <td className="p-3 text-zinc-400">Your API key</td>
