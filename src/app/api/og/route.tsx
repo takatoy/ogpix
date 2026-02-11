@@ -1,4 +1,4 @@
-import { ImageResponse } from "@vercel/og";
+import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
 import React from "react";
 import { BlogTemplate } from "@/templates/blog";
