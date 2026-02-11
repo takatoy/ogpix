@@ -82,7 +82,7 @@ export default function BuilderPage() {
         if (Array.isArray(data)) {
           setKeys(data);
           if (data.length > 0 && !selectedKey) {
-            setSelectedKey(data[0].keyPreview);
+            setSelectedKey(data[0].key);
           }
         }
       })
@@ -146,7 +146,7 @@ export default function BuilderPage() {
         Design your OG image and get production-ready URLs with your API key.
       </p>
 
-      <div className="grid lg:grid-cols-[340px_1fr] gap-6">
+      <div className="grid lg:grid-cols-[340px_1fr] gap-6 overflow-hidden">
         {/* Controls */}
         <div className="space-y-5">
           {/* Template */}
@@ -300,7 +300,7 @@ export default function BuilderPage() {
         </div>
 
         {/* Preview & output */}
-        <div className="space-y-4">
+        <div className="space-y-4 min-w-0">
           {/* Preview */}
           <div className="rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900/50">
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -330,7 +330,7 @@ export default function BuilderPage() {
                 className="w-full px-3 py-2 bg-zinc-950 border border-zinc-800 rounded-lg text-sm focus:outline-none focus:border-violet-500 transition"
               >
                 {keys.map((k) => (
-                  <option key={k.id} value={k.keyPreview}>
+                  <option key={k.id} value={k.key}>
                     {k.name} ({k.keyPreview})
                   </option>
                 ))}
