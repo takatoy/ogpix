@@ -127,8 +127,9 @@ export async function GET(req: NextRequest) {
         break;
     }
 
-    // Wrap with watermark for preview/unauthenticated
-    if (!authenticated) {
+    // Wrap with watermark for preview/unauthenticated (skip if watermark=false for landing page)
+    const skipWatermark = searchParams.get("watermark") === "false";
+    if (!authenticated && !skipWatermark) {
       element = (
         <div style={{ position: "relative", display: "flex", width: "1200px", height: "630px" }}>
           {element}
