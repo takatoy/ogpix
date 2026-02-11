@@ -43,6 +43,7 @@ export default function PlaygroundPage() {
     const params = new URLSearchParams();
     params.set("template", template);
     params.set("theme", theme);
+    params.set("preview", "true");
     for (const field of TEMPLATE_FIELDS[template]) {
       const value = fields[field.key] || field.placeholder;
       params.set(field.key, value);

@@ -75,7 +75,7 @@ export default function SignupPage() {
             </div>
           )}
           <div>
-            <label className="text-sm text-zinc-400 mb-1 block">Name</label>
+            <label className="text-sm text-zinc-400 mb-1 block">Username</label>
             <input
               type="text"
               value={name}

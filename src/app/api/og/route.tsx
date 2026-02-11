@@ -24,11 +24,14 @@ export async function GET(req: NextRequest) {
     const handle = searchParams.get("handle") || undefined;
     const logo = searchParams.get("logo") || undefined;
     const theme = (searchParams.get("theme") as "light" | "dark") || "dark";
+    const preview = searchParams.get("preview") === "true";
 
     // API key authentication
     const apiKey =
       searchParams.get("key") ||
       req.headers.get("authorization")?.replace("Bearer ", "");
+
+    let authenticated = false;
 
     if (apiKey) {
       // Rate limit by API key
@@ -58,6 +61,20 @@ export async function GET(req: NextRequest) {
 
       // Track usage
       await incrementUsage(result.user.id);
+      authenticated = true;
+    }
+
+    // Require API key for clean images (non-preview)
+    if (!authenticated && !preview) {
+      return new Response(
+        JSON.stringify({
+          error: "API key required",
+          message:
+            "Add your API key as ?key=YOUR_KEY or use preview=true for watermarked images",
+          signup: "https://ogpix.dev/signup",
+        }),
+        { status: 401, headers: { "Content-Type": "application/json" } }
+      );
     }
 
     // Generate template
@@ -108,6 +125,40 @@ export async function GET(req: NextRequest) {
           />
         );
         break;
+    }
+
+    // Wrap with watermark for preview/unauthenticated
+    if (!authenticated) {
+      element = (
+        <div style={{ position: "relative", display: "flex", width: "1200px", height: "630px" }}>
+          {element}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "1200px",
+              height: "630px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                fontSize: "72px",
+                fontWeight: 900,
+                color: "rgba(255,255,255,0.15)",
+                transform: "rotate(-25deg)",
+                letterSpacing: "8px",
+              }}
+            >
+              ogpix.dev
+            </div>
+          </div>
+        </div>
+      );
     }
 
     return new ImageResponse(element, {
