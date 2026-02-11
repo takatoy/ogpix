@@ -13,6 +13,9 @@ export default function DashboardPage() {
     percentage: number;
   } | null>(null);
   const [keyCount, setKeyCount] = useState(0);
+  const [emailVerified, setEmailVerified] = useState<boolean | null>(null);
+  const [resending, setResending] = useState(false);
+  const [resentOk, setResentOk] = useState(false);
 
   useEffect(() => {
     fetch("/api/usage")
@@ -23,7 +26,24 @@ export default function DashboardPage() {
       .then((r) => r.json())
       .then((data) => setKeyCount(Array.isArray(data) ? data.length : 0))
       .catch(() => {});
+    fetch("/api/user")
+      .then((r) => r.json())
+      .then((data) => setEmailVerified(!!data.emailVerified))
+      .catch(() => {});
   }, []);
+
+  async function resendVerification() {
+    setResending(true);
+    try {
+      const res = await fetch("/api/auth/verify", { method: "POST" });
+      if (res.ok) {
+        setResentOk(true);
+        setTimeout(() => setResentOk(false), 5000);
+      }
+    } finally {
+      setResending(false);
+    }
+  }
 
   const user = session?.user as Record<string, unknown> | undefined;
 
@@ -33,6 +53,26 @@ export default function DashboardPage() {
       <p className="text-zinc-400 mb-8">
         Welcome back, {String(user?.name || user?.email || "there")}
       </p>
+
+      {emailVerified === false && (
+        <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-5 mb-6 flex items-center justify-between">
+          <div>
+            <h3 className="font-semibold text-amber-400 text-sm">
+              Verify your email
+            </h3>
+            <p className="text-xs text-zinc-400 mt-1">
+              Check your inbox to verify your email and unlock API key creation.
+            </p>
+          </div>
+          <button
+            onClick={resendVerification}
+            disabled={resending || resentOk}
+            className="px-4 py-2 bg-amber-600 hover:bg-amber-500 disabled:opacity-50 rounded-lg text-xs font-medium transition shrink-0"
+          >
+            {resentOk ? "Sent!" : resending ? "Sending..." : "Resend email"}
+          </button>
+        </div>
+      )}
 
       <div className="grid md:grid-cols-3 gap-6 mb-8">
         <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">

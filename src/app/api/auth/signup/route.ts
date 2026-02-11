@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
+import { sendVerificationEmail } from "@/lib/email";
 
 export async function POST(req: Request) {
   try {
@@ -26,7 +27,15 @@ export async function POST(req: Request) {
       data: { email, passwordHash, name: name || email.split("@")[0] },
     });
 
-    return NextResponse.json({ id: user.id, email: user.email }, { status: 201 });
+    // Send verification email (non-blocking)
+    sendVerificationEmail(email).catch((err) =>
+      console.error("Failed to send verification email:", err)
+    );
+
+    return NextResponse.json(
+      { id: user.id, email: user.email, message: "Check your email to verify your account" },
+      { status: 201 }
+    );
   } catch (e) {
     console.error("Signup error:", e);
     return NextResponse.json(

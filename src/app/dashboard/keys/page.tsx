@@ -16,6 +16,9 @@ export default function KeysPage() {
   const [newKeyName, setNewKeyName] = useState("");
   const [newKey, setNewKey] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [resending, setResending] = useState(false);
+  const [resentOk, setResentOk] = useState(false);
 
   const loadKeys = useCallback(() => {
     fetch("/api/keys")
@@ -32,6 +35,7 @@ export default function KeysPage() {
 
   async function createKey() {
     setLoading(true);
+    setError(null);
     try {
       const res = await fetch("/api/keys", {
         method: "POST",
@@ -43,9 +47,24 @@ export default function KeysPage() {
         setNewKey(data.key);
         setNewKeyName("");
         loadKeys();
+      } else {
+        setError(data.error || "Failed to create key");
       }
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function resendVerification() {
+    setResending(true);
+    try {
+      const res = await fetch("/api/auth/verify", { method: "POST" });
+      if (res.ok) {
+        setResentOk(true);
+        setTimeout(() => setResentOk(false), 5000);
+      }
+    } finally {
+      setResending(false);
     }
   }
 
@@ -86,6 +105,37 @@ export default function KeysPage() {
           </button>
         </div>
       </div>
+
+      {/* Email verification error */}
+      {error && error.includes("verify") && (
+        <div className="bg-amber-500/10 border border-amber-500/20 rounded-xl p-6 mb-6">
+          <h3 className="font-semibold text-amber-400 mb-2">
+            Email verification required
+          </h3>
+          <p className="text-sm text-zinc-400 mb-4">
+            You need to verify your email before creating API keys. Check your
+            inbox for a verification link.
+          </p>
+          <button
+            onClick={resendVerification}
+            disabled={resending || resentOk}
+            className="px-4 py-2 bg-amber-600 hover:bg-amber-500 disabled:opacity-50 rounded-lg text-sm font-medium transition"
+          >
+            {resentOk
+              ? "Verification email sent!"
+              : resending
+                ? "Sending..."
+                : "Resend verification email"}
+          </button>
+        </div>
+      )}
+
+      {/* Other errors */}
+      {error && !error.includes("verify") && (
+        <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 mb-6">
+          <p className="text-sm text-red-400">{error}</p>
+        </div>
+      )}
 
       {/* Show newly created key */}
       {newKey && (

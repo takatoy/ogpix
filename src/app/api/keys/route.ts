@@ -33,6 +33,13 @@ export async function POST(req: Request) {
   const user = await getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+  if (!user.emailVerified) {
+    return NextResponse.json(
+      { error: "Please verify your email before creating API keys" },
+      { status: 403 }
+    );
+  }
+
   const { name } = await req.json();
 
   const keyCount = await prisma.apiKey.count({ where: { userId: user.id } });

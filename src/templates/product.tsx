@@ -1,10 +1,12 @@
 import React from "react";
+import type { CustomStyle } from "./types";
 
 interface ProductTemplateProps {
   title: string;
   subtitle?: string;
   logo?: string;
   theme?: "light" | "dark";
+  custom?: CustomStyle;
 }
 
 export function ProductTemplate({
@@ -12,8 +14,19 @@ export function ProductTemplate({
   subtitle,
   logo,
   theme = "dark",
+  custom,
 }: ProductTemplateProps) {
   const isDark = theme === "dark";
+
+  const bg =
+    custom?.bg ||
+    (isDark
+      ? "linear-gradient(to bottom right, #111827, #1f2937)"
+      : "linear-gradient(to bottom right, #f8fafc, #e2e8f0)");
+  const textColor = custom?.color || (isDark ? "white" : "#111827");
+  const accent =
+    custom?.accent || "linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899)";
+  const baseFontSize = custom?.fontSize ? parseInt(custom.fontSize) : null;
 
   return (
     <div
@@ -24,10 +37,8 @@ export function ProductTemplate({
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        background: isDark
-          ? "linear-gradient(to bottom right, #111827, #1f2937)"
-          : "linear-gradient(to bottom right, #f8fafc, #e2e8f0)",
-        color: isDark ? "white" : "#111827",
+        background: bg,
+        color: textColor,
         fontFamily: "sans-serif",
         position: "relative",
       }}
@@ -39,7 +50,7 @@ export function ProductTemplate({
           left: 0,
           right: 0,
           height: "4px",
-          background: "linear-gradient(to right, #3b82f6, #8b5cf6, #ec4899)",
+          background: accent,
           display: "flex",
         }}
       />
@@ -54,7 +65,9 @@ export function ProductTemplate({
       <div
         style={{
           display: "flex",
-          fontSize: title.length > 40 ? "52px" : "68px",
+          fontSize:
+            baseFontSize ||
+            (title.length > 40 ? "52px" : "68px"),
           fontWeight: 800,
           textAlign: "center",
           maxWidth: "900px",

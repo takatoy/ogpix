@@ -8,6 +8,7 @@ import { MinimalTemplate } from "@/templates/minimal";
 import { validateApiKey } from "@/lib/api-key";
 import { checkUsageLimit, incrementUsage } from "@/lib/usage";
 import { rateLimit } from "@/lib/rate-limit";
+import type { CustomStyle } from "@/templates/types";
 
 export const runtime = "nodejs";
 
@@ -25,6 +26,15 @@ export async function GET(req: NextRequest) {
     const logo = searchParams.get("logo") || undefined;
     const theme = (searchParams.get("theme") as "light" | "dark") || "dark";
     const preview = searchParams.get("preview") === "true";
+
+    // Custom style params
+    const custom: CustomStyle = {};
+    if (searchParams.get("bg")) custom.bg = searchParams.get("bg")!;
+    if (searchParams.get("color")) custom.color = searchParams.get("color")!;
+    if (searchParams.get("accent")) custom.accent = searchParams.get("accent")!;
+    if (searchParams.get("fontSize"))
+      custom.fontSize = searchParams.get("fontSize")!;
+    const hasCustom = Object.keys(custom).length > 0 ? custom : undefined;
 
     // API key authentication
     const apiKey =
@@ -88,6 +98,7 @@ export async function GET(req: NextRequest) {
             subtitle={subtitle}
             logo={logo}
             theme={theme}
+            custom={hasCustom}
           />
         );
         break;
@@ -99,6 +110,7 @@ export async function GET(req: NextRequest) {
             author={author}
             handle={handle}
             theme={theme}
+            custom={hasCustom}
           />
         );
         break;
@@ -109,6 +121,7 @@ export async function GET(req: NextRequest) {
             subtitle={subtitle}
             site={site}
             theme={theme}
+            custom={hasCustom}
           />
         );
         break;
@@ -122,16 +135,23 @@ export async function GET(req: NextRequest) {
             date={date}
             site={site}
             theme={theme}
+            custom={hasCustom}
           />
         );
         break;
     }
 
-    // Wrap with watermark for preview/unauthenticated (skip if watermark=false for landing page)
-    const skipWatermark = searchParams.get("watermark") === "false";
-    if (!authenticated && !skipWatermark) {
+    // Wrap with watermark for unauthenticated preview requests
+    if (!authenticated && preview) {
       element = (
-        <div style={{ position: "relative", display: "flex", width: "1200px", height: "630px" }}>
+        <div
+          style={{
+            position: "relative",
+            display: "flex",
+            width: "1200px",
+            height: "630px",
+          }}
+        >
           {element}
           <div
             style={{

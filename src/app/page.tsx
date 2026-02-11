@@ -89,7 +89,7 @@ export default function Home() {
               <div className="rounded-xl overflow-hidden border border-zinc-800 bg-zinc-900/50 hover:border-violet-500/50 transition">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src={`/api/og?preview=true&watermark=false&${t.params}`}
+                  src={`/api/og?preview=true&${t.params}`}
                   alt={`${t.name} template`}
                   className="w-full aspect-[1200/630]"
                 />

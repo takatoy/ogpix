@@ -1,4 +1,5 @@
 import React from "react";
+import type { CustomStyle } from "./types";
 
 interface SocialTemplateProps {
   title: string;
@@ -6,6 +7,7 @@ interface SocialTemplateProps {
   author?: string;
   handle?: string;
   theme?: "light" | "dark";
+  custom?: CustomStyle;
 }
 
 export function SocialTemplate({
@@ -14,8 +16,17 @@ export function SocialTemplate({
   author,
   handle,
   theme = "dark",
+  custom,
 }: SocialTemplateProps) {
   const isDark = theme === "dark";
+
+  const bg =
+    custom?.bg ||
+    (isDark
+      ? "linear-gradient(135deg, #ff6b6b 0%, #ee5a24 25%, #f9ca24 50%, #6ab04c 75%, #22a6b3 100%)"
+      : "linear-gradient(135deg, #a29bfe 0%, #6c5ce7 50%, #fd79a8 100%)");
+  const textColor = custom?.color || "white";
+  const baseFontSize = custom?.fontSize ? parseInt(custom.fontSize) : null;
 
   return (
     <div
@@ -26,10 +37,8 @@ export function SocialTemplate({
         flexDirection: "column",
         justifyContent: "space-between",
         padding: "70px 80px",
-        background: isDark
-          ? "linear-gradient(135deg, #ff6b6b 0%, #ee5a24 25%, #f9ca24 50%, #6ab04c 75%, #22a6b3 100%)"
-          : "linear-gradient(135deg, #a29bfe 0%, #6c5ce7 50%, #fd79a8 100%)",
-        color: "white",
+        background: bg,
+        color: textColor,
         fontFamily: "sans-serif",
       }}
     >
@@ -37,7 +46,9 @@ export function SocialTemplate({
         <div
           style={{
             display: "flex",
-            fontSize: title.length > 50 ? "50px" : "62px",
+            fontSize:
+              baseFontSize ||
+              (title.length > 50 ? "50px" : "62px"),
             fontWeight: 900,
             lineHeight: 1.15,
             textShadow: "0 2px 10px rgba(0,0,0,0.2)",
@@ -70,7 +81,7 @@ export function SocialTemplate({
             width: "56px",
             height: "56px",
             borderRadius: "50%",
-            background: "rgba(255,255,255,0.3)",
+            background: custom?.accent || "rgba(255,255,255,0.3)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

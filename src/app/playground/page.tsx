@@ -33,10 +33,23 @@ const TEMPLATE_FIELDS: Record<Template, { key: string; label: string; placeholde
   ],
 };
 
+const PRESET_STYLES = [
+  { label: "Default", bg: "", color: "", accent: "" },
+  { label: "Ocean", bg: "linear-gradient(135deg, #0c1445 0%, #1a3a6b 50%, #2196F3 100%)", color: "#ffffff", accent: "#2196F3" },
+  { label: "Sunset", bg: "linear-gradient(135deg, #2d1b00 0%, #e65100 50%, #ff9800 100%)", color: "#ffffff", accent: "#ff9800" },
+  { label: "Forest", bg: "linear-gradient(135deg, #0d1f0d 0%, #1b5e20 50%, #4caf50 100%)", color: "#ffffff", accent: "#4caf50" },
+  { label: "Rose", bg: "linear-gradient(135deg, #1a0011 0%, #880e4f 50%, #e91e63 100%)", color: "#ffffff", accent: "#e91e63" },
+  { label: "Slate", bg: "#1e293b", color: "#e2e8f0", accent: "#64748b" },
+];
+
 export default function PlaygroundPage() {
   const [template, setTemplate] = useState<Template>("blog");
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [fields, setFields] = useState<Record<string, string>>({});
+  const [customBg, setCustomBg] = useState("");
+  const [customColor, setCustomColor] = useState("");
+  const [customAccent, setCustomAccent] = useState("");
+  const [customFontSize, setCustomFontSize] = useState("");
   const [imageKey, setImageKey] = useState(0);
 
   function getImageUrl() {
@@ -48,6 +61,10 @@ export default function PlaygroundPage() {
       const value = fields[field.key] || field.placeholder;
       params.set(field.key, value);
     }
+    if (customBg) params.set("bg", customBg);
+    if (customColor) params.set("color", customColor);
+    if (customAccent) params.set("accent", customAccent);
+    if (customFontSize) params.set("fontSize", customFontSize);
     return `/api/og?${params.toString()}`;
   }
 
@@ -59,12 +76,23 @@ export default function PlaygroundPage() {
       const value = fields[field.key] || field.placeholder;
       params.set(field.key, value);
     }
+    if (customBg) params.set("bg", customBg);
+    if (customColor) params.set("color", customColor);
+    if (customAccent) params.set("accent", customAccent);
+    if (customFontSize) params.set("fontSize", customFontSize);
     params.set("key", "YOUR_API_KEY");
     return `https://ogpix.dev/api/og?${params.toString()}`;
   }
 
   function handleFieldChange(key: string, value: string) {
     setFields((prev) => ({ ...prev, [key]: value }));
+  }
+
+  function applyPreset(preset: (typeof PRESET_STYLES)[number]) {
+    setCustomBg(preset.bg);
+    setCustomColor(preset.color);
+    setCustomAccent(preset.accent);
+    setImageKey((k) => k + 1);
   }
 
   function handleGenerate() {
@@ -78,8 +106,8 @@ export default function PlaygroundPage() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-2">Template Playground</h1>
           <p className="text-zinc-400">
-            Try all templates live. Customize the fields and see the result
-            instantly.
+            Try all templates live. Customize colors, fonts, and content.
+            Sign up for watermark-free images.
           </p>
         </div>
 
@@ -133,7 +161,7 @@ export default function PlaygroundPage() {
 
             {/* Fields */}
             <div className="space-y-3">
-              <label className="text-sm text-zinc-400 block">Fields</label>
+              <label className="text-sm text-zinc-400 block">Content</label>
               {TEMPLATE_FIELDS[template].map((field) => (
                 <div key={field.key}>
                   <label className="text-xs text-zinc-500 mb-1 block">
@@ -152,6 +180,79 @@ export default function PlaygroundPage() {
               ))}
             </div>
 
+            {/* Style presets */}
+            <div>
+              <label className="text-sm text-zinc-400 mb-2 block">
+                Color presets
+              </label>
+              <div className="flex flex-wrap gap-2">
+                {PRESET_STYLES.map((preset) => (
+                  <button
+                    key={preset.label}
+                    onClick={() => applyPreset(preset)}
+                    className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-xs font-medium transition"
+                  >
+                    {preset.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Custom style */}
+            <div className="space-y-3">
+              <label className="text-sm text-zinc-400 block">
+                Custom style
+              </label>
+              <div>
+                <label className="text-xs text-zinc-500 mb-1 block">
+                  Background (color or CSS gradient)
+                </label>
+                <input
+                  type="text"
+                  placeholder="#1a1a2e or linear-gradient(...)"
+                  value={customBg}
+                  onChange={(e) => setCustomBg(e.target.value)}
+                  className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-sm focus:outline-none focus:border-violet-500 transition"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-zinc-500 mb-1 block">
+                  Text color
+                </label>
+                <input
+                  type="text"
+                  placeholder="#ffffff"
+                  value={customColor}
+                  onChange={(e) => setCustomColor(e.target.value)}
+                  className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-sm focus:outline-none focus:border-violet-500 transition"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-zinc-500 mb-1 block">
+                  Accent color
+                </label>
+                <input
+                  type="text"
+                  placeholder="#8b5cf6"
+                  value={customAccent}
+                  onChange={(e) => setCustomAccent(e.target.value)}
+                  className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-sm focus:outline-none focus:border-violet-500 transition"
+                />
+              </div>
+              <div>
+                <label className="text-xs text-zinc-500 mb-1 block">
+                  Title font size (px)
+                </label>
+                <input
+                  type="text"
+                  placeholder="64"
+                  value={customFontSize}
+                  onChange={(e) => setCustomFontSize(e.target.value)}
+                  className="w-full px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-sm focus:outline-none focus:border-violet-500 transition"
+                />
+              </div>
+            </div>
+
             <button
               onClick={handleGenerate}
               className="w-full py-3 bg-violet-600 hover:bg-violet-500 rounded-lg font-semibold transition"
@@ -163,7 +264,7 @@ export default function PlaygroundPage() {
               href="/signup"
               className="block text-center py-3 bg-zinc-800 hover:bg-zinc-700 rounded-lg text-sm font-medium transition"
             >
-              Sign up to get your API key
+              Sign up for watermark-free images
             </Link>
           </div>
 

@@ -1,4 +1,5 @@
 import React from "react";
+import type { CustomStyle } from "./types";
 
 interface BlogTemplateProps {
   title: string;
@@ -7,6 +8,7 @@ interface BlogTemplateProps {
   date?: string;
   site?: string;
   theme?: "light" | "dark";
+  custom?: CustomStyle;
 }
 
 export function BlogTemplate({
@@ -16,8 +18,17 @@ export function BlogTemplate({
   date,
   site,
   theme = "dark",
+  custom,
 }: BlogTemplateProps) {
   const isDark = theme === "dark";
+
+  const bg =
+    custom?.bg ||
+    (isDark
+      ? "linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2d1b69 100%)"
+      : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)");
+  const textColor = custom?.color || "white";
+  const baseFontSize = custom?.fontSize ? parseInt(custom.fontSize) : null;
 
   return (
     <div
@@ -28,13 +39,24 @@ export function BlogTemplate({
         flexDirection: "column",
         justifyContent: "center",
         padding: "80px",
-        background: isDark
-          ? "linear-gradient(135deg, #0f0f23 0%, #1a1a3e 50%, #2d1b69 100%)"
-          : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-        color: "white",
+        background: bg,
+        color: textColor,
         fontFamily: "sans-serif",
       }}
     >
+      {custom?.accent && (
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: "6px",
+            background: custom.accent,
+            display: "flex",
+          }}
+        />
+      )}
       {site && (
         <div
           style={{
@@ -52,7 +74,9 @@ export function BlogTemplate({
       <div
         style={{
           display: "flex",
-          fontSize: title.length > 60 ? "48px" : "64px",
+          fontSize:
+            baseFontSize ||
+            (title.length > 60 ? "48px" : "64px"),
           fontWeight: 800,
           lineHeight: 1.2,
           marginBottom: subtitle ? "20px" : "0",

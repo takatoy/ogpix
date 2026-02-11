@@ -31,7 +31,8 @@ export default function SignupPage() {
         return;
       }
 
-      // Auto sign in after signup
+      // Auto sign in after signup, redirect to dashboard
+      // The dashboard will show a verification banner
       await signIn("credentials", {
         email,
         password,

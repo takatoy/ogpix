@@ -51,7 +51,14 @@ export const authOptions: NextAuthOptions = {
               email: user.email,
               name: user.name,
               image: user.image,
+              emailVerified: new Date(), // GitHub has verified the email
             },
+          });
+        } else if (!existing.emailVerified) {
+          // Auto-verify existing users who sign in via GitHub
+          await prisma.user.update({
+            where: { email: user.email },
+            data: { emailVerified: new Date() },
           });
         }
       }
